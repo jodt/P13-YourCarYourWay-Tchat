@@ -11,7 +11,6 @@ public class ChatMessageMapper {
         return ChatMessageDto.builder()
                 .sender(chatMessage.getSender())
                 .content(chatMessage.getContent())
-                .roomId(chatMessage.getRoomId())
                 .build();
     }
 
@@ -19,7 +18,6 @@ public class ChatMessageMapper {
         return ChatMessage.builder()
                 .sender(chatMessageDto.getSender())
                 .content(chatMessageDto.getContent())
-                .roomId(chatMessageDto.getRoomId())
                 .timestamp(LocalDateTime.now())
                 .build();
     }
