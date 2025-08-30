@@ -1,0 +1,29 @@
+<div id="chat">
+  @if (!user) {
+    <div class="register">
+      <h1>Rejoindre le chat</h1>
+      <input [(ngModel)]="pseudo" placeholder="Votre pseudo" />
+      @if (errorMessage) {
+        <div>Utilisateur déjà existant</div>
+      }
+      <button class="button" (click)="register()">Rejoindre le chat</button>
+    </div>
+  } @else {
+    <div class="messages-container">
+      <h1>Service client</h1>
+      <p>Bienvenue {{ user.username }} !</p>
+      <div #messagesList class="messages-list">
+        @for (message of messageList ; track $index) {
+          <div [ngClass]="user.username === message.sender ? 'message' : 'sender-message'">
+            {{message.content}}
+          </div>
+        }
+      </div>
+      <div class="message-validation">
+        <textarea [(ngModel)]="messageInput" placeholder="Votre message" name="message" id="message"  rows="5"></textarea>
+        <button class="button" (click)="sendMessage()">Envoyer le message</button>
+      </div>
+
+    </div>
+  }
+</div>
