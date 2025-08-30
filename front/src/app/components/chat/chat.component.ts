@@ -24,6 +24,7 @@ export class ChatComponent implements OnInit {
   messageList: ChatMessage[] = [];
   messageInput: string =  "";
   errorMessage: string = "";
+  isConnected = false;
 
   constructor(private chatService : ChatServiceService, private userService: UserService, private router: Router) {
   }
@@ -34,9 +35,11 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
         this.chatService.initConnectionSocket();
+        this.chatService.isConnected().subscribe(status => {
+          this.isConnected = status;
+        });
         this.chatService.getMessageSubject().subscribe((messages: ChatMessage[])=> {
           this.messageList = messages;
-          console.log("messages : " + this.messageList.length );
         })
     }
 
@@ -66,8 +69,9 @@ export class ChatComponent implements OnInit {
 
 
   joinChat() {
-    console.log("passe par là")
-    this.chatService.joinRoom("room1")
+    if (this.isConnected) {
+      this.chatService.joinRoom("room1")
+    }
   }
 
   sendMessage (){
@@ -75,7 +79,6 @@ export class ChatComponent implements OnInit {
       content: this.messageInput,
       sender: this.user?.username
     } as ChatMessage
-    console.log(chatMessage);
     this.chatService.sendMessage("room1", chatMessage);
     this.messageInput='';
   }
