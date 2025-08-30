@@ -41,8 +41,6 @@ export class ChatServiceService {
         ]);
       });
     })
-
-
   }
 
   sendMessage(roomId: string, chatMessage: ChatMessage) {
