@@ -1,9 +1,8 @@
 package com.yourcaryourway.back.service;
 
 import com.yourcaryourway.back.dto.UserDto;
-import com.yourcaryourway.back.exception.UserAlreadyExistException;
 import com.yourcaryourway.back.model.User;
 
 public interface UserService {
-    User addUser(UserDto user) throws UserAlreadyExistException;
+    User addUser(UserDto user);
 }

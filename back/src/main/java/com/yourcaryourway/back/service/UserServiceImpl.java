@@ -1,10 +1,11 @@
 package com.yourcaryourway.back.service;
 
 import com.yourcaryourway.back.dto.UserDto;
-import com.yourcaryourway.back.exception.UserAlreadyExistException;
 import com.yourcaryourway.back.model.User;
 import com.yourcaryourway.back.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -16,15 +17,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(UserDto user) throws UserAlreadyExistException {
-        checkIfUserExist(user);
-        User newUser = User.builder().username(user.getUsername()).build();
-        return this.userRepository.save(newUser);
+    public User addUser(UserDto user) {
+
+        Optional<User> existingUser = isUserAlreadyRegistered(user);
+        if (existingUser.isPresent()) {
+            return existingUser.get();
+        } else {
+            User newUser = User.builder().username(user.getUsername()).build();
+            return this.userRepository.save(newUser);
+        }
     }
 
-    private void checkIfUserExist(UserDto userDto) throws UserAlreadyExistException {
-        if (this.userRepository.findByUsername(userDto.getUsername()).isPresent()) {
-            throw new UserAlreadyExistException();
-        }
+    private Optional<User> isUserAlreadyRegistered(UserDto userDto) {
+        return this.userRepository.findByUsername(userDto.getUsername());
     }
 }

@@ -1,6 +1,5 @@
 package com.yourcaryourway.back.controller;
 import com.yourcaryourway.back.dto.UserDto;
-import com.yourcaryourway.back.exception.UserAlreadyExistException;
 import com.yourcaryourway.back.model.User;
 import com.yourcaryourway.back.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,7 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public UserDto register(@RequestBody UserDto userDto) throws UserAlreadyExistException {
+    public UserDto register(@RequestBody UserDto userDto) {
        User user =  this.userService.addUser(userDto);
        return UserDto.builder().id(user.getId()).username(user.getUsername()).build();
     }
