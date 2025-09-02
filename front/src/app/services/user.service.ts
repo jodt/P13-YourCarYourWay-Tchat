@@ -15,4 +15,17 @@ export class UserService {
   addUser(user: User) : Observable<User> {
     return this.httpClient.post<User>(`${this.pathService}/register`, user);
   }
+
+  setUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  getCurrentUser(): User | null {
+    let user = localStorage.getItem("user")
+    return user ? JSON.parse(user) : null;
+  }
+
+  clearUser() {
+    localStorage.removeItem("user");
+  }
 }
