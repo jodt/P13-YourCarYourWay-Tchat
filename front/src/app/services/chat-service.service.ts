@@ -14,16 +14,18 @@ export class ChatServiceService {
   private stompClient : any;
   private messageSubject$ : BehaviorSubject<ChatMessage[]> = new BehaviorSubject<ChatMessage[]>([])
   private connected$ = new BehaviorSubject<boolean>(false);
+  private subscription: any;
 
   constructor(private httpClient: HttpClient) { }
 
-  initConnectionSocket() {
-    const url = "http://localhost:8080/chat";
+  initConnectionSocket(roomId:string) {
+    const url = "http://localhost:8080/ws-chat";
     const socket = new SockJS(url);
     this.stompClient = Stomp.over(socket);
 
     this.stompClient.connect({}, () => {
       this.connected$.next(true);
+      this.joinRoom(roomId)
     }, (error: any) => {
       this.connected$.next(false)
     });
@@ -33,7 +35,7 @@ export class ChatServiceService {
     this.getHistoricalMessagesByRoom(roomId).subscribe(messages => {
       this.messageSubject$.next(messages);
 
-      this.stompClient.subscribe(`/topic/${roomId}`, (message: any) => {
+      this.subscription = this.stompClient.subscribe(`/topic/${roomId}`, (message: any) => {
         const messageContent: ChatMessage = JSON.parse(message.body);
         this.messageSubject$.next([
           ...this.messageSubject$.getValue(),
@@ -46,6 +48,21 @@ export class ChatServiceService {
   sendMessage(roomId: string, chatMessage: ChatMessage) {
     this.stompClient.send(`/app/chat/${roomId}`, {}, JSON.stringify(chatMessage))
 
+  }
+
+  logout() {
+    if(this.subscription) {
+      this.stompClient.unsubscribe(this.subscription);
+      this.subscription = null;
+    }
+
+    if (this.stompClient) {
+      this.stompClient.disconnect(() => {
+        this.connected$.next(false);
+      });
+    }
+
+    this.messageSubject$.next([]);
   }
 
   getMessageSubject() {
