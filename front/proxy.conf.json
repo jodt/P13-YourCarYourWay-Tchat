@@ -4,7 +4,7 @@
     "secure": false,
     "changeOrigin": true
   },
-  "/chat": {
+  "/ws-chat": {
     "target": "ws://localhost:8080",
     "ws": true
   }
