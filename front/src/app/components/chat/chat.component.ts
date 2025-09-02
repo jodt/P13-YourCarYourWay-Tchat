@@ -1,30 +1,27 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {RouterModule, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {ChatServiceService} from "../../services/chat-service.service";
 import {ChatMessage} from "../../interfaces/chat-message";
 import {UserService} from "../../services/user.service";
 import {User} from "../../interfaces/user"
-import {NgClass} from "@angular/common";
+import {AsyncPipe, NgClass} from "@angular/common";
+import {Observable} from "rxjs";
 
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [RouterModule, FormsModule, NgClass],
+  imports: [RouterModule, FormsModule, NgClass, AsyncPipe],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
 export class ChatComponent implements OnInit {
 
   @ViewChild("messagesList") private messagesList!: ElementRef;
-
-  pseudo: string = '';
-  user: User | undefined;
-  messageList: ChatMessage[] = [];
+  user!: User | null;
+  messageList$: Observable<ChatMessage[]> = new Observable<ChatMessage[]>();
   messageInput: string =  "";
-  errorMessage: string = "";
-  isConnected = false;
 
   constructor(private chatService : ChatServiceService, private userService: UserService, private router: Router) {
   }
@@ -34,44 +31,9 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-        this.chatService.initConnectionSocket();
-        this.chatService.isConnected().subscribe(status => {
-          this.isConnected = status;
-        });
-        this.chatService.getMessageSubject().subscribe((messages: ChatMessage[])=> {
-          this.messageList = messages;
-        })
-    }
-
-
-
-  register () {
-    if (this.pseudo.trim() !== '') {
-      const user =  {
-        username : this.pseudo
-      } as User;
-      this.userService.addUser(user)
-        .subscribe({
-          next: response => {
-            this.user = response;
-            console.log(user.username)
-            this.joinChat();
-          },
-          error: error => {
-            if(error.status === 409) {
-              this.errorMessage = "Pseudo déja utilisé";
-              this.router.navigate(["/"]);
-            }
-          }
-        });
-    }
-  }
-
-
-  joinChat() {
-    if (this.isConnected) {
-      this.chatService.joinRoom("room1")
-    }
+    this.user = this.userService.getCurrentUser();
+    this.chatService.initConnectionSocket("room1");
+    this.messageList$ = this.chatService.getMessageSubject()
   }
 
   sendMessage (){
@@ -83,19 +45,22 @@ export class ChatComponent implements OnInit {
     this.messageInput='';
   }
 
-  listenerMessage(){
-    this.chatService.getMessageSubject().subscribe((messages: ChatMessage[])=> {
-      this.messageList = messages;
-      console.log("messages : " + this.messageList.length )
-    })
+  logout() {
+    this.userService.clearUser();
+    this.chatService.logout( );
+    this.router.navigate(['/']);
   }
 
+
   private scrollToBottom(): void {
-    try {
-      this.messagesList.nativeElement.scrollTop = this.messagesList.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error(err);
+    if(this.user) {
+      try {
+        this.messagesList.nativeElement.scrollTop = this.messagesList.nativeElement.scrollHeight;
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
+
 
 }
