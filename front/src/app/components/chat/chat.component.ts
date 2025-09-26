@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {RouterModule, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {ChatServiceService} from "../../services/chat-service.service";
