@@ -20,11 +20,11 @@ public class WebSocketChatController {
         this.chatMessageService = chatMessageService;
     }
 
-    @MessageMapping("/chat/{roomId}")
-    @SendTo("/topic/{roomId}")
-    public ChatMessageDto sendMessage (@DestinationVariable String roomId, ChatMessageDto chatMessageDto) {
+    @MessageMapping("/chat/{room}")
+    @SendTo("/topic/{room}")
+    public ChatMessageDto sendMessage (@DestinationVariable String room, ChatMessageDto chatMessageDto) {
         ChatMessage chatMessage = ChatMessageMapper.toChatMessage(chatMessageDto);
-        chatMessage.setRoomId(roomId);
+        chatMessage.setRoom(room);
         chatMessageService.save(chatMessage);
         return ChatMessageMapper.toChatMessageDto(chatMessage);
     }

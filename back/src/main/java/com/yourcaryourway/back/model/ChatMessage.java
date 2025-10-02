@@ -24,5 +24,5 @@ public class ChatMessage {
     private String content;
     private String sender;
     private LocalDateTime timestamp;
-    private String roomId;
+    private String room;
 }

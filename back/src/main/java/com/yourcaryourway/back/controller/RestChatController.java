@@ -21,9 +21,9 @@ public class RestChatController {
         this.chatMessageService = chatMessageService;
     }
 
-    @GetMapping("/all/room/{roomId}")
-    List<ChatMessageDto> getMessagesByRoom(@PathVariable String roomId) {
-        List<ChatMessage> historicalMessages = this.chatMessageService.getMessagesByRoom(roomId);
+    @GetMapping("/all/room/{room}")
+    List<ChatMessageDto> getMessagesByRoom(@PathVariable String room) {
+        List<ChatMessage> historicalMessages = this.chatMessageService.getMessagesByRoom(room);
         return historicalMessages.stream().map(ChatMessageMapper::toChatMessageDto).toList();
     }
 }

@@ -21,7 +21,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     }
 
     @Override
-    public List<ChatMessage> getMessagesByRoom(String roomId) {
-        return this.chatMessageRepository.findAllByRoomId(roomId);
+    public List<ChatMessage> getMessagesByRoom(String room) {
+        return this.chatMessageRepository.findAllByRoom(room);
     }
 }
