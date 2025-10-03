@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS chat_message (
     id BINARY(16) NOT NULL,
     sender VARCHAR(100) NOT NULL,
     content VARCHAR(500) NOT NULL,
-    send_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    send_at DATETIME(6) NOT NULL,
     room VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
     );

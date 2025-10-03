@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS payment (
     amount DECIMAL(10,2) NOT NULL,
     stripe_payment_id VARCHAR(100) NOT NULL,
     devise CHAR(3) NOT NULL,
-    payment_date DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    payment_date DATETIME(6) NOT NULL,
     PRIMARY KEY (id)
     );
