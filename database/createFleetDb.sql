@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS agency (
     id BINARY(16) NOT NULL,
     phone_number VARCHAR(20),
     address_id BINARY(16) UNIQUE,
+    client_id CHAR(36) NOT NULL UNIQUE,
+    client_secret VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_agency_address FOREIGN KEY (address_id) REFERENCES agency_address(id)
     ON DELETE CASCADE

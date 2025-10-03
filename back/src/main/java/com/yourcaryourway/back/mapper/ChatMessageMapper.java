@@ -18,7 +18,7 @@ public class ChatMessageMapper {
         return ChatMessage.builder()
                 .sender(chatMessageDto.getSender())
                 .content(chatMessageDto.getContent())
-                .timestamp(LocalDateTime.now())
+                .sendAt(LocalDateTime.now())
                 .build();
     }
 

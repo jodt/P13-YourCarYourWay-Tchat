@@ -56,7 +56,7 @@ There are two ways to start the application:
 
 ```
 #database
-spring.datasource.url=jdbc:mysql://localhost:3306/chatdb?createDatabaseIfNotExist=true
+spring.datasource.url=jdbc:mysql://localhost:3306/chat?createDatabaseIfNotExist=true
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 ```
