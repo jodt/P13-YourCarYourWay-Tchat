@@ -4,10 +4,10 @@ USE fleet;
 CREATE TABLE IF NOT EXISTS agency_address (
     id BINARY(16) NOT NULL,
     number VARCHAR(10),
-    street VARCHAR(150),
-    city VARCHAR(100),
-    zipcode VARCHAR(20),
-    country VARCHAR(100),
+    street VARCHAR(150) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    zipcode VARCHAR(20) NOT NULL,
+    country VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
     );
 
