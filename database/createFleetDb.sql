@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS agency_address (
 
 CREATE TABLE IF NOT EXISTS agency (
     id BINARY(16) NOT NULL,
-    phone_number VARCHAR(20),
-    address_id BINARY(16) UNIQUE,
+    phone_number VARCHAR(20) NOT NULL,
+    address_id BINARY(16) UNIQUE NOT NULL,
     client_id CHAR(36) NOT NULL UNIQUE,
     client_secret VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
