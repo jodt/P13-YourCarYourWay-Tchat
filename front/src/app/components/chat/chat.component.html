@@ -1,0 +1,18 @@
+<div id="chat">
+  <div class="messages-container">
+    <h1>Service client</h1>
+    <p>Bienvenue {{ user?.username }} !</p>
+    <div #messagesList class="messages-list">
+      @for (message of messageList$ | async ; track $index) {
+        <div [ngClass]="user?.username === message.sender ? 'message' : 'sender-message'">
+          {{message.content}}
+        </div>
+      }
+    </div>
+    <div class="message-validation">
+      <textarea [(ngModel)]="messageInput" placeholder="Votre message" name="message" id="message"  rows="5"></textarea>
+      <button class="button" (click)="sendMessage()">Envoyer le message</button>
+      <button class="button" (click)="logout()">Quitter le tchat</button>
+    </div>
+  </div>
+</div>
